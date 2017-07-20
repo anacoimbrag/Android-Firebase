@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_saved_cards:
                         replaceFragment(new SavedCardsFragment());
+                        break;
+                    case R.id.action_profile:
+                        replaceFragment(new ProfileFragment());
                 }
 
                 return true;

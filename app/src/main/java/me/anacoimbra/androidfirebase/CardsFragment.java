@@ -41,6 +41,8 @@ public class CardsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cards, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        getActivity().setTitle(R.string.cards);
+
         List<String> list = Arrays.asList("Lib 1","Lib 2", "Lib 3", "Lib 4", "Lib 5");
 
         swipeDeck.setAdapter(new SwipeDeckAdapter(list));

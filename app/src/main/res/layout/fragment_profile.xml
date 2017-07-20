@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="20dp"
+    tools:context="me.anacoimbra.androidfirebase.ProfileFragment">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="16dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@mipmap/ic_user"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/atmospheric"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="18dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ana Coimbra"
+        android:id="@+id/name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ana.coimbra.gomes@email.com"
+        android:id="@+id/email" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="12dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/interests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/partial_interest"/>
+
+</LinearLayout>

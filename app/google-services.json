@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "864792193384",
+    "firebase_url": "https://android-firebase-8538d.firebaseio.com",
+    "project_id": "android-firebase-8538d",
+    "storage_bucket": "android-firebase-8538d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864792193384:android:75befed3d5b15267",
+        "android_client_info": {
+          "package_name": "me.anacoimbra.androidfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864792193384-67ea9pbm4jpvdtk9im7amm77s2jhk33g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcFUfSYQoVw3iAyJ_L-4FyQkZfuugpeQ8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

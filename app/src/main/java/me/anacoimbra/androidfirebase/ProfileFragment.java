@@ -1,12 +1,13 @@
 package me.anacoimbra.androidfirebase;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,34 +15,38 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SavedCardsFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-
-    @BindView(R.id.items)
-    RecyclerView items;
+    @BindView(R.id.profile_image)
+    CircleImageView profileImage;
+    @BindView(R.id.name)
+    TextView name;
+    @BindView(R.id.email)
+    TextView email;
+    @BindView(R.id.interests)
+    RecyclerView interests;
     Unbinder unbinder;
 
-    public SavedCardsFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_saved_cards, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
+        getActivity().setTitle(R.string.profile);
 
-        getActivity().setTitle(R.string.saved_cards);
+        List<String> items = Arrays.asList("Notifications", "RecyclerView", "Banco de dados", "ProgressBar");
 
-        List<String> list = Arrays.asList("Lib 1","Lib 2", "Lib 3", "Lib 4", "Lib 5");
-        items.setAdapter(new SavedCardsAdapter(list));
+        interests.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        interests.setAdapter(new InterestsAdapter(items));
 
         return view;
     }
