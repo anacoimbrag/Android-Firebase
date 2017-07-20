@@ -2,4 +2,10 @@
     <string name="app_name">Android + Firebase</string>
     <string name="recover_password_title">Recuperar senha</string>
     <string name="register_user_title">Cadastro</string>
+    <string name="cards">Cards</string>
+    <string name="saved_cards">Cards Salvos</string>
+    <string name="profile">Perfil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

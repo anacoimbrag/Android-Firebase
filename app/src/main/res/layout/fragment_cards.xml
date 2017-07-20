@@ -1,0 +1,18 @@
+<com.daprlabs.cardstack.SwipeFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.daprlabs.cardstack.SwipeDeck
+        android:id="@+id/swipe_deck"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:padding="20dp"
+        swipedeck:card_spacing="10dp"
+        swipedeck:max_visible="3"
+        swipedeck:render_above="true"
+        swipedeck:rotation_degrees="15" />
+
+</com.daprlabs.cardstack.SwipeFrameLayout>

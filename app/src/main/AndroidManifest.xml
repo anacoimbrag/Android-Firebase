@@ -20,7 +20,8 @@
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RecoverPasswordActivity" />
-        <activity android:name=".RegisterUserActivity"></activity>
+        <activity android:name=".RegisterUserActivity" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

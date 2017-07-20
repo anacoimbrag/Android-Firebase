@@ -37,4 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onRegisterUserClick() {
         startActivity(new Intent(this, RegisterUserActivity.class));
     }
+
+    @OnClick(R.id.enter_button)
+    public void onEnterClick() {
+        startActivity(new Intent(this, MainActivity.class));
+    }
 }
