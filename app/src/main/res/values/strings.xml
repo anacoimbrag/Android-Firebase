@@ -8,4 +8,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="required_field_error">Este campo é obrigatório</string>
+    <string name="invalid_email_error">Email inválido</string>
+    <string name="weak_password_error">A senha deve ter no mínimo 6 caracteres</string>
+    <string name="sent_email_success">Um email foi enviado para recuperar a senha, verifique sua caixa de entrada.</string>
 </resources>

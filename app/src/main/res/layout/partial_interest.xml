@@ -8,7 +8,7 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/atmospheric"
+        android:textColor="@color/orange"
         android:textAlignment="center"
         android:text="Android"/>
 </LinearLayout>
