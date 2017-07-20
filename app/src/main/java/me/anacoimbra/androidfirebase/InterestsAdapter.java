@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,11 +18,7 @@ import butterknife.ButterKnife;
 
 public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.ViewHolder> {
 
-    private List<String> items;
-
-    public InterestsAdapter(List<String> items) {
-        this.items = items;
-    }
+    private List<String> items = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,6 +35,11 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.View
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

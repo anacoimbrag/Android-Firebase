@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,11 +18,7 @@ import butterknife.ButterKnife;
 
 public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.ViewHolder> {
 
-    private List<String> items;
-
-    public SavedCardsAdapter(List<String> items) {
-        this.items = items;
-    }
+    private List<Library> items = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,7 +29,8 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView2.setText(items.get(position));
+        holder.name.setText(items.get(position).getName());
+
     }
 
     @Override
@@ -40,10 +38,15 @@ public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.Vi
         return items.size();
     }
 
+    public void setItems(List<Library> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.textView2)
-        TextView textView2;
+        @BindView(R.id.name)
+        TextView name;
 
         ViewHolder(View itemView) {
             super(itemView);

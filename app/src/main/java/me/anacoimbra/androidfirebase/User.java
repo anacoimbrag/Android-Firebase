@@ -12,6 +12,9 @@ public class User {
     private String email;
     private List<String> interests;
 
+    public User() {
+    }
+
     public User(String uid, String name, String email, List<String> interests) {
         this.uid = uid;
         this.name = name;

@@ -29,13 +29,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Ana Coimbra"
+        tools:text="Ana Coimbra"
         android:id="@+id/name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ana.coimbra.gomes@email.com"
+        tools:text="ana.coimbra.gomes@email.com"
         android:id="@+id/email" />
 
     <View
@@ -47,5 +47,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/partial_interest"/>
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textColor="@color/orange"
+        android:text="@string/logout"/>
 
 </LinearLayout>

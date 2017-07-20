@@ -8,7 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Arrays;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,6 +35,12 @@ public class SavedCardsFragment extends Fragment {
     RecyclerView items;
     Unbinder unbinder;
 
+    SavedCardsAdapter adapter;
+    List<Library> libraries;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference libsRef = database.getReference("libs");
+
     public SavedCardsFragment() {
         // Required empty public constructor
     }
@@ -40,8 +55,33 @@ public class SavedCardsFragment extends Fragment {
 
         getActivity().setTitle(R.string.saved_cards);
 
-        List<String> list = Arrays.asList("Lib 1","Lib 2", "Lib 3", "Lib 4", "Lib 5");
-        items.setAdapter(new SavedCardsAdapter(list));
+        adapter = new SavedCardsAdapter();
+        items.setAdapter(adapter);
+
+        libsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<Library>> t = new GenericTypeIndicator<List<Library>>() {};
+                libraries = dataSnapshot.getValue(t);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    Iterator<Library> libraryIterator = libraries.iterator();
+                    while (libraryIterator.hasNext()) {
+                        Library l = libraryIterator.next();
+                        if (!l.getUsers().containsKey(user.getUid()) || !l.getUsers().get(user.getUid())) {
+                            libraryIterator.remove();
+                        }
+                    }
+                    adapter.setItems(libraries);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         return view;
     }

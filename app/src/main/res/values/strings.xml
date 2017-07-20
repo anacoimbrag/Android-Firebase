@@ -12,4 +12,6 @@
     <string name="invalid_email_error">Email inválido</string>
     <string name="weak_password_error">A senha deve ter no mínimo 6 caracteres</string>
     <string name="sent_email_success">Um email foi enviado para recuperar a senha, verifique sua caixa de entrada.</string>
+    <string name="github">GitHub</string>
+    <string name="logout">Sair</string>
 </resources>

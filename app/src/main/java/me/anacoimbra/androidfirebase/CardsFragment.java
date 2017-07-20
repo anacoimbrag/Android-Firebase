@@ -9,9 +9,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,7 +39,16 @@ public class CardsFragment extends Fragment {
 
     @BindView(R.id.swipe_deck)
     SwipeDeck swipeDeck;
+
     Unbinder unbinder;
+    SwipeDeckAdapter adapter;
+
+    FirebaseUser user;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference libsRef = database.getReference("libs");
+
+    List<Library> libraries;
 
     public CardsFragment() {
         // Required empty public constructor
@@ -41,26 +62,60 @@ public class CardsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cards, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         getActivity().setTitle(R.string.cards);
 
-        List<String> list = Arrays.asList("Lib 1","Lib 2", "Lib 3", "Lib 4", "Lib 5");
+        adapter = new SwipeDeckAdapter();
+        swipeDeck.setAdapter(adapter);
 
-        swipeDeck.setAdapter(new SwipeDeckAdapter(list));
+        libsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<Library>> t = new GenericTypeIndicator<List<Library>>() {};
+                libraries = dataSnapshot.getValue(t);
+                Iterator<Library> libraryIterator = libraries.iterator();
+                while (libraryIterator.hasNext()) {
+                    Library l = libraryIterator.next();
+                    if (l.getUsers().containsKey(user.getUid()) && l.getUsers().get(user.getUid())) {
+                        libraryIterator.remove();
+                    }
+                }
+                adapter.setData(libraries);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         swipeDeck.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
-                Toast.makeText(getActivity(), "Left", Toast.LENGTH_SHORT).show();
+                if (user != null)
+                    libraries.get(position).getUsers().put(user.getUid(), false);
+
+                libsRef.child(String.valueOf(position))
+                        .child("users")
+                        .child(user.getUid())
+                        .setValue(false);
             }
 
             @Override
             public void cardSwipedRight(int position) {
-                Toast.makeText(getActivity(), "Right", Toast.LENGTH_SHORT).show();
+                if (user != null)
+                    libraries.get(position).getUsers().put(user.getUid(), true);
+
+                libsRef.child(String.valueOf(position))
+                        .child("users").
+                        child(user.getUid())
+                        .setValue(true);
             }
 
             @Override
             public void cardsDepleted() {
-                Toast.makeText(getActivity(), "Empty", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
