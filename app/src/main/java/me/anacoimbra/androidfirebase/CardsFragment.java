@@ -93,8 +93,6 @@ public class CardsFragment extends Fragment {
         swipeDeck.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
-                if (user != null)
-                    libraries.get(position).getUsers().put(user.getUid(), false);
 
                 libsRef.child(String.valueOf(position))
                         .child("users")
@@ -104,8 +102,6 @@ public class CardsFragment extends Fragment {
 
             @Override
             public void cardSwipedRight(int position) {
-                if (user != null)
-                    libraries.get(position).getUsers().put(user.getUid(), true);
 
                 libsRef.child(String.valueOf(position))
                         .child("users").
