@@ -14,4 +14,7 @@
     <string name="sent_email_success">Um email foi enviado para recuperar a senha, verifique sua caixa de entrada.</string>
     <string name="github">GitHub</string>
     <string name="logout">Sair</string>
+    <string name="add_lib">Adicionar biblioteca</string>
+    <string name="save">Salvar</string>
+    <string name="invalid_date_error">Data inválida</string>
 </resources>

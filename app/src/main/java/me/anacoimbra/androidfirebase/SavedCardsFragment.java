@@ -17,8 +17,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,13 +32,12 @@ import butterknife.Unbinder;
  */
 public class SavedCardsFragment extends Fragment {
 
-
     @BindView(R.id.items)
     RecyclerView items;
     Unbinder unbinder;
 
     SavedCardsAdapter adapter;
-    List<Library> libraries;
+    HashMap<String, Library> libraries;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference libsRef = database.getReference("libs");
@@ -61,18 +62,22 @@ public class SavedCardsFragment extends Fragment {
         libsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<Library>> t = new GenericTypeIndicator<List<Library>>() {};
+                GenericTypeIndicator<HashMap<String, Library>> t = new GenericTypeIndicator<HashMap<String, Library>>(){};
                 libraries = dataSnapshot.getValue(t);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Iterator<Library> libraryIterator = libraries.iterator();
-                    while (libraryIterator.hasNext()) {
-                        Library l = libraryIterator.next();
-                        if (!l.getUsers().containsKey(user.getUid()) || !l.getUsers().get(user.getUid())) {
-                            libraryIterator.remove();
+                    if (libraries != null) {
+                        Iterator<Map.Entry<String, Library>> iterator = libraries.entrySet().iterator();
+                        while (iterator.hasNext()) {
+                            Map.Entry<String, Library> entry = iterator.next();
+                            entry.getValue().setUid(entry.getKey());
+                            if (!entry.getValue().getUsers().containsKey(user.getUid()) ||
+                                    !entry.getValue().getUsers().get(user.getUid())) {
+                                iterator.remove();
+                            }
                         }
+                        adapter.setItems(libraries);
                     }
-                    adapter.setItems(libraries);
                 }
             }
 

@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class Library {
 
+    private String uid;
     @SerializedName("name")
     private String name;
     @SerializedName("url")
@@ -23,6 +24,26 @@ public class Library {
     @SerializedName("description")
     private String description;
     private HashMap<String, Boolean> users = new HashMap<>();
+
+    public Library() {
+    }
+
+    public Library(String name, String url, String date, int min_sdk, String liscence, String description) {
+        this.name = name;
+        this.url = url;
+        this.date = date;
+        this.min_sdk = min_sdk;
+        this.liscence = liscence;
+        this.description = description;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getName() {
         return name;

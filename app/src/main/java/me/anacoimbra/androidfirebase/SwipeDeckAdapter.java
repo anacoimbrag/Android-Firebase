@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class SwipeDeckAdapter extends BaseAdapter {
 
-    private List<Library> data = new ArrayList<>();
+    private HashMap<String, Library> data = new HashMap<>();
 
     @Override
     public int getCount() {
@@ -31,7 +32,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
 
     @Override
     public Library getItem(int position) {
-        return data.get(position);
+        return (Library) data.values().toArray()[position];
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
         return position;
     }
 
-    public void setData(List<Library> data) {
+    public void setData(HashMap<String, Library> data) {
         this.data = data;
         notifyDataSetChanged();
     }
