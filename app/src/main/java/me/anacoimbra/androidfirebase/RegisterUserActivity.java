@@ -19,6 +19,7 @@ import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -79,6 +80,8 @@ public class RegisterUserActivity extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference imagesRef = storage.getReference().child("images");
 
+    private FirebaseAnalytics firebaseAnalytics;
+
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
@@ -86,6 +89,8 @@ public class RegisterUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
         ButterKnife.bind(this);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         setTitle(R.string.register_user_title);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,21 +114,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 final FirebaseUser firebaseUser = task.getResult().getUser();
-
-                                UploadTask uploadTask = imagesRef.child(firebaseUser.getUid()).putFile(profileUri);
-                                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                        if (task.isSuccessful() && task.getResult().getDownloadUrl() != null) {
-                                            User user = new User(firebaseUser.getUid(), name, email,
-                                                    task.getResult().getDownloadUrl().toString(), interests);
-                                            userRef.child(user.getUid()).setValue(user.toMap());
-                                            Intent intent = new Intent(RegisterUserActivity.this, MainActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                });
+                                uploadPicture(firebaseUser);
                             } else {
                                 try {
                                     throw task.getException();
@@ -182,6 +173,34 @@ public class RegisterUserActivity extends AppCompatActivity {
                 .setAspectRatio(300, 300)
                 .setCropShape(CropImageView.CropShape.OVAL)
                 .start(this);
+    }
+
+    private void uploadPicture(final FirebaseUser firebaseUser) {
+        UploadTask uploadTask = imagesRef.child(firebaseUser.getUid()).putFile(profileUri);
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful() && task.getResult().getDownloadUrl() != null) {
+                    User user = new User(firebaseUser.getUid(), name, email,
+                            task.getResult().getDownloadUrl().toString(), interests);
+                    userRef.child(user.getUid()).setValue(user.toMap());
+                    registerToAnalytics();
+                    openMainActivity();
+                }
+            }
+        });
+    }
+
+    private void registerToAnalytics() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.UserProperty.SIGN_UP_METHOD, "email and password");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
+    }
+
+    private void openMainActivity() {
+        Intent intent = new Intent(RegisterUserActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private boolean validate() {

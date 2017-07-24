@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:864792193384:android:75befed3d5b15267",
+        "mobilesdk_app_id": "1:864792193384:android:71e8212e713fba7a",
         "android_client_info": {
-          "package_name": "me.anacoimbra.androidfirebase"
+          "package_name": "me.anacoimbra.libshatelove"
         }
       },
       "oauth_client": [
