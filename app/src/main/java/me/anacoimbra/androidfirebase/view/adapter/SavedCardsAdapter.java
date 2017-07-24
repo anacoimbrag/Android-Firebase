@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,30 +6,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.R;
 
 /**
  * Created by anacoimbra on 20/07/17.
  */
 
-public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.ViewHolder> {
+public class SavedCardsAdapter extends RecyclerView.Adapter<SavedCardsAdapter.ViewHolder> {
 
-    private List<String> items = new ArrayList<>();
+    private HashMap<String, Library> items = new HashMap<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.partial_interest, parent, false);
+        View view = inflater.inflate(R.layout.partial_saved_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.text.setText(items.get(position));
+        holder.name.setText(((Library) items.values().toArray()[position]).getName());
+
     }
 
     @Override
@@ -37,15 +39,15 @@ public class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.View
         return items.size();
     }
 
-    public void setItems(List<String> items) {
+    public void setItems(HashMap<String, Library> items) {
         this.items = items;
         notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.text)
-        TextView text;
+        @BindView(R.id.name)
+        TextView name;
 
         ViewHolder(View itemView) {
             super(itemView);

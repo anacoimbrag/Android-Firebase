@@ -1,9 +1,11 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import me.anacoimbra.androidfirebase.R;
 
 public class SplashActivity extends AppCompatActivity {
 

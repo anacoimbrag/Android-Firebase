@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.adapter;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,12 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.R;
 
 /**
  * Created by anacoimbra on 20/07/17.

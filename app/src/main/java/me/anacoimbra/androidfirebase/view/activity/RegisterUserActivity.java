@@ -1,6 +1,5 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.activity;
 
-import android.*;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,9 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +26,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
-import com.karumi.dexter.DexterActivity;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
@@ -38,17 +34,18 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import mabbas007.tagsedittext.TagsEditText;
+import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.model.User;
 
 public class RegisterUserActivity extends AppCompatActivity {
 
-    @BindView(R.id.profile_image)
+    @BindView(me.anacoimbra.androidfirebase.R.id.profile_image)
     CircleImageView profileImage;
     @BindView(R.id.name_input)
     TextInputEditText nameInput;

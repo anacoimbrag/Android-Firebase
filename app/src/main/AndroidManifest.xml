@@ -17,7 +17,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".SplashActivity"
+        <activity android:name=".view.activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RecoverPasswordActivity" />
-        <activity android:name=".RegisterUserActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".AddLibActivity"></activity>
+        <activity android:name=".view.activity.RecoverPasswordActivity" />
+        <activity android:name=".view.activity.RegisterUserActivity" />
+        <activity android:name=".view.activity.MainActivity" />
+        <activity android:name=".view.activity.AddLibActivity"></activity>
     </application>
 
 </manifest>

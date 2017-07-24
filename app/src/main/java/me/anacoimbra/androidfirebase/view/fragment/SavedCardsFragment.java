@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.fragment;
 
 
 import android.os.Bundle;
@@ -19,12 +19,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.view.adapter.SavedCardsAdapter;
 
 
 /**

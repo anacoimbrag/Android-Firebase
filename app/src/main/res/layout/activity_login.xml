@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context="me.anacoimbra.androidfirebase.LoginActivity">
+    tools:context="me.anacoimbra.androidfirebase.view.activity.LoginActivity">
 
     <View
         android:layout_width="0dp"

@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.model;
 
 import java.util.HashMap;
 import java.util.List;

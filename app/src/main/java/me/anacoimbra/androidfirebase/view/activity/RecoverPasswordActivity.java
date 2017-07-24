@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.anacoimbra.androidfirebase.R;
 
 public class RecoverPasswordActivity extends AppCompatActivity {
 

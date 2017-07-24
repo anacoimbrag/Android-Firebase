@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,14 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.anacoimbra.androidfirebase.view.adapter.InterestsAdapter;
+import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.model.User;
+import me.anacoimbra.androidfirebase.view.activity.LoginActivity;
 
 
 public class ProfileFragment extends Fragment {

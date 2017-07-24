@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.fragment;
 
 
 import android.content.Intent;
@@ -29,6 +29,10 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.view.adapter.SwipeDeckAdapter;
+import me.anacoimbra.androidfirebase.view.activity.AddLibActivity;
 
 
 /**

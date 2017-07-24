@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:padding="20dp"
-    tools:context="me.anacoimbra.androidfirebase.ProfileFragment">
+    tools:context="me.anacoimbra.androidfirebase.view.fragment.ProfileFragment">
 
     <View
         android:layout_width="0dp"

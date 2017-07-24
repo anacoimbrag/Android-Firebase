@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +21,8 @@ import br.com.sapereaude.maskedEditText.MaskedEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.R;
 
 public class AddLibActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package me.anacoimbra.androidfirebase;
+package me.anacoimbra.androidfirebase.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,10 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.anacoimbra.androidfirebase.view.fragment.CardsFragment;
+import me.anacoimbra.androidfirebase.view.fragment.ProfileFragment;
+import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.view.fragment.SavedCardsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
