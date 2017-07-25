@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,6 +56,8 @@ public class CardsFragment extends Fragment {
 
     HashMap<String, Library> libraries;
 
+    private FirebaseAnalytics firebaseAnalytics;
+
     public CardsFragment() {
         // Required empty public constructor
     }
@@ -65,6 +69,8 @@ public class CardsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cards, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -131,10 +137,18 @@ public class CardsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add)
+        if (item.getItemId() == R.id.action_add) {
+            sendAnalytics();
             startActivityForResult(new Intent(getActivity(), AddLibActivity.class), 10);
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendAnalytics() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FirebaseAnalytics.Param.START_DATE, Calendar.getInstance().getTime());
+        firebaseAnalytics.logEvent("ADD_LIB", bundle);
     }
 
     private void getData() {
