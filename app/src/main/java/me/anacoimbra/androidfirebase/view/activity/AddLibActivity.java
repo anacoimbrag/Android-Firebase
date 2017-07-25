@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -121,6 +122,7 @@ public class AddLibActivity extends AppCompatActivity {
                 date = f.format(d);
                 nameLayout.setError(null);
             } catch (ParseException e) {
+                FirebaseCrash.log("User entered wrong date format");
                 nameLayout.setError(getString(R.string.invalid_date_error));
                 return false;
             }
