@@ -10,3 +10,5 @@
 .idea/modules.xml
 .idea/misc.xml
 *.apk
+app/app-release.apk
+*.apk

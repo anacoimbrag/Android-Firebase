@@ -111,7 +111,14 @@ public class RegisterUserActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 final FirebaseUser firebaseUser = task.getResult().getUser();
-                                uploadPicture(firebaseUser);
+                                if (profileUri != null) uploadPicture(firebaseUser);
+                                else {
+                                    User user = new User(firebaseUser.getUid(), name, email,
+                                            null, interests);
+                                    userRef.child(user.getUid()).setValue(user.toMap());
+                                    registerToAnalytics();
+                                    openMainActivity();
+                                }
                             } else {
                                 try {
                                     throw task.getException();
