@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import me.anacoimbra.androidfirebase.model.Library;
 import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.model.User;
 import me.anacoimbra.androidfirebase.view.adapter.SwipeDeckAdapter;
 import me.anacoimbra.androidfirebase.view.activity.AddLibActivity;
 
@@ -54,7 +55,7 @@ public class CardsFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference libsRef = database.getReference("libs");
 
-    HashMap<String, Library> libraries;
+    HashMap<String, Library> libraries = new HashMap<>();
 
     private FirebaseAnalytics firebaseAnalytics;
 
@@ -155,20 +156,14 @@ public class CardsFragment extends Fragment {
         libsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<HashMap<String, Library>> t = new GenericTypeIndicator<HashMap<String, Library>>() {};
-                libraries = dataSnapshot.getValue(t);
-                if (libraries != null) {
-                    Iterator<Map.Entry<String, Library>> iterator = libraries.entrySet().iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry<String, Library> entry = iterator.next();
-                        entry.getValue().setUid(entry.getKey());
-                        if (entry.getValue().getUsers().containsKey(user.getUid()) &&
-                                entry.getValue().getUsers().get(user.getUid())) {
-                            iterator.remove();
-                        }
+                for(DataSnapshot libSnapshot : dataSnapshot.getChildren()) {
+                    Library lib = libSnapshot.getValue(Library.class);
+                    if (lib != null) {
+                        lib.setUid(libSnapshot.getKey());
+                        libraries.put(libSnapshot.getKey(), lib);
                     }
-                    adapter.setData(libraries);
                 }
+                adapter.setData(libraries);
             }
 
             @Override

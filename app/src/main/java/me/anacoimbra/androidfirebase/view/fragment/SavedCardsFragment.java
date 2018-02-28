@@ -39,7 +39,7 @@ public class SavedCardsFragment extends Fragment {
     Unbinder unbinder;
 
     SavedCardsAdapter adapter;
-    HashMap<String, Library> libraries;
+    HashMap<String, Library> libraries = new HashMap<>();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference libsRef = database.getReference("libs");
@@ -64,8 +64,9 @@ public class SavedCardsFragment extends Fragment {
         libsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<HashMap<String, Library>> t = new GenericTypeIndicator<HashMap<String, Library>>(){};
-                libraries = dataSnapshot.getValue(t);
+                for (DataSnapshot libSnapshot : dataSnapshot.getChildren()) {
+                    libraries.put(libSnapshot.getKey(), libSnapshot.getValue(Library.class));
+                }
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     if (libraries != null) {
