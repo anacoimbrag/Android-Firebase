@@ -7,9 +7,9 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -122,7 +122,7 @@ public class AddLibActivity extends AppCompatActivity {
                 date = f.format(d);
                 nameLayout.setError(null);
             } catch (ParseException e) {
-                FirebaseCrash.log("User entered wrong date format");
+                Crashlytics.log("User entered wrong date format");
                 nameLayout.setError(getString(R.string.invalid_date_error));
                 return false;
             }
