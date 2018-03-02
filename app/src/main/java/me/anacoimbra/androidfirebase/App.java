@@ -2,8 +2,8 @@ package me.anacoimbra.androidfirebase;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.crash.FirebaseCrash;
 
 /**
  * Created by anacoimbra on 20/07/17.
@@ -16,6 +16,6 @@ public class App extends Application {
 
         FirebaseApp.initializeApp(this);
 
-        FirebaseCrash.report(new Exception("App initialized"));
+        Crashlytics.log("App initialized");
     }
 }
