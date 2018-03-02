@@ -70,11 +70,13 @@ public class ProfileFragment extends Fragment {
                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                            User user = JsonUtils.map2Object(documentSnapshot.getData(), User.class);
-                            name.setText(user.getName());
-                            email.setText(user.getEmail());
-                            adapter.setItems(user.getInterests());
-                            Glide.with(getActivity()).load(user.getPicture()).into(profileImage);
+                            if (documentSnapshot.exists()) {
+                                User user = JsonUtils.map2Object(documentSnapshot.getData(), User.class);
+                                name.setText(user.getName());
+                                email.setText(user.getEmail());
+                                adapter.setItems(user.getInterests());
+                                Glide.with(getActivity()).load(user.getPicture()).into(profileImage);
+                            }
                         }
                     });
         }
