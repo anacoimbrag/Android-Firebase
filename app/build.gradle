@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'io.fabric'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -39,12 +41,14 @@ dependencies {
     compile 'com.karumi:dexter:4.1.0'
     compile 'com.github.bumptech.glide:glide:4.6.1'
     compile 'ru.egslava:MaskedEditText:1.0.5'
-    compile 'com.google.firebase:firebase-database:11.8.0'
+    compile 'com.google.firebase:firebase-firestore:11.8.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-storage:11.8.0'
-    compile 'com.google.firebase:firebase-crash:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true;
+    }
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
 }

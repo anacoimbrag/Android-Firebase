@@ -10,22 +10,21 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.anacoimbra.androidfirebase.model.Library;
 import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.util.JsonUtils;
 import me.anacoimbra.androidfirebase.view.adapter.SavedCardsAdapter;
 
 
@@ -41,8 +40,7 @@ public class SavedCardsFragment extends Fragment {
     SavedCardsAdapter adapter;
     HashMap<String, Library> libraries = new HashMap<>();
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference libsRef = database.getReference("libs");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public SavedCardsFragment() {
         // Required empty public constructor
@@ -61,34 +59,27 @@ public class SavedCardsFragment extends Fragment {
         adapter = new SavedCardsAdapter();
         items.setAdapter(adapter);
 
-        libsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot libSnapshot : dataSnapshot.getChildren()) {
-                    libraries.put(libSnapshot.getKey(), libSnapshot.getValue(Library.class));
-                }
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    if (libraries != null) {
-                        Iterator<Map.Entry<String, Library>> iterator = libraries.entrySet().iterator();
-                        while (iterator.hasNext()) {
-                            Map.Entry<String, Library> entry = iterator.next();
-                            entry.getValue().setUid(entry.getKey());
-                            if (!entry.getValue().getUsers().containsKey(user.getUid()) ||
-                                    !entry.getValue().getUsers().get(user.getUid())) {
-                                iterator.remove();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            db.collection("libs")
+                    .whereEqualTo(FieldPath.of("users", user.getUid()), true)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                            if (e != null) {
+                                return;
                             }
+
+                            for (DocumentSnapshot document : documentSnapshots) {
+                                Library library = JsonUtils.map2Object(document.getData(), Library.class);
+                                library.setUid(document.getId());
+                                libraries.put(document.getId(), library);
+                            }
+
+                            adapter.setItems(libraries);
                         }
-                        adapter.setItems(libraries);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                    });
+        }
 
 
         return view;

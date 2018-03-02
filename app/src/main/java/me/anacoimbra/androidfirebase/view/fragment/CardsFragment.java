@@ -3,6 +3,7 @@ package me.anacoimbra.androidfirebase.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,26 +17,25 @@ import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import me.anacoimbra.androidfirebase.model.Library;
 import me.anacoimbra.androidfirebase.R;
-import me.anacoimbra.androidfirebase.model.User;
-import me.anacoimbra.androidfirebase.view.adapter.SwipeDeckAdapter;
+import me.anacoimbra.androidfirebase.model.Library;
+import me.anacoimbra.androidfirebase.util.JsonUtils;
 import me.anacoimbra.androidfirebase.view.activity.AddLibActivity;
+import me.anacoimbra.androidfirebase.view.adapter.SwipeDeckAdapter;
 
 
 /**
@@ -52,8 +52,7 @@ public class CardsFragment extends Fragment {
 
     FirebaseUser user;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference libsRef = database.getReference("libs");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     HashMap<String, Library> libraries = new HashMap<>();
 
@@ -65,7 +64,7 @@ public class CardsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cards, container, false);
@@ -86,20 +85,30 @@ public class CardsFragment extends Fragment {
         swipeDeck.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
+                final DocumentReference libsRef = db.collection("libs")
+                        .document(adapter.getItem(position).getUid());
 
-                libsRef.child(adapter.getItem(position).getUid())
-                        .child("users")
-                        .child(user.getUid())
-                        .setValue(false);
+                db.runTransaction(new Transaction.Function<Boolean>() {
+                    @Override
+                    public Boolean apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                        transaction.update(libsRef, "users." + user.getUid(), false);
+                        return false;
+                    }
+                });
             }
 
             @Override
             public void cardSwipedRight(int position) {
+                final DocumentReference libsRef = db.collection("libs")
+                        .document(adapter.getItem(position).getUid());
 
-                libsRef.child(adapter.getItem(position).getUid())
-                        .child("users").
-                        child(user.getUid())
-                        .setValue(true);
+                db.runTransaction(new Transaction.Function<Boolean>() {
+                    @Override
+                    public Boolean apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                        transaction.update(libsRef, "users." + user.getUid(), true);
+                        return true;
+                    }
+                });
             }
 
             @Override
@@ -153,23 +162,22 @@ public class CardsFragment extends Fragment {
     }
 
     private void getData() {
-        libsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot libSnapshot : dataSnapshot.getChildren()) {
-                    Library lib = libSnapshot.getValue(Library.class);
-                    if (lib != null) {
-                        lib.setUid(libSnapshot.getKey());
-                        libraries.put(libSnapshot.getKey(), lib);
+        db.collection("libs")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        for (DocumentSnapshot document : documentSnapshots) {
+                            Library library = JsonUtils.map2Object(document.getData(), Library.class);
+                            library.setUid(document.getId());
+                            libraries.put(document.getId(), library);
+                        }
+
+                        adapter.setData(libraries);
                     }
-                }
-                adapter.setData(libraries);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                });
     }
 }

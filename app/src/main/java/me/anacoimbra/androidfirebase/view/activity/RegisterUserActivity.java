@@ -20,8 +20,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -71,8 +70,7 @@ public class RegisterUserActivity extends AppCompatActivity {
 
     Uri profileUri;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef = database.getReference("users");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference imagesRef = storage.getReference().child("images");
@@ -115,7 +113,9 @@ public class RegisterUserActivity extends AppCompatActivity {
                                 else {
                                     User user = new User(firebaseUser.getUid(), name, email,
                                             null, interests);
-                                    userRef.child(user.getUid()).setValue(user.toMap());
+                                    db.collection("users")
+                                            .document(user.getUid())
+                                            .set(user.toMap());
                                     registerToAnalytics();
                                     openMainActivity();
                                 }
@@ -187,7 +187,9 @@ public class RegisterUserActivity extends AppCompatActivity {
                 if (task.isSuccessful() && task.getResult().getDownloadUrl() != null) {
                     User user = new User(firebaseUser.getUid(), name, email,
                             task.getResult().getDownloadUrl().toString(), interests);
-                    userRef.child(user.getUid()).setValue(user.toMap());
+                    db.collection("users")
+                            .document(user.getUid())
+                            .set(user.toMap());
                     registerToAnalytics();
                     openMainActivity();
                 }

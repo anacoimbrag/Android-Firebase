@@ -13,21 +13,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
-import me.anacoimbra.androidfirebase.view.adapter.InterestsAdapter;
 import me.anacoimbra.androidfirebase.R;
 import me.anacoimbra.androidfirebase.model.User;
+import me.anacoimbra.androidfirebase.util.JsonUtils;
 import me.anacoimbra.androidfirebase.view.activity.LoginActivity;
+import me.anacoimbra.androidfirebase.view.adapter.InterestsAdapter;
 
 
 public class ProfileFragment extends Fragment {
@@ -44,8 +44,7 @@ public class ProfileFragment extends Fragment {
     Unbinder unbinder;
     InterestsAdapter adapter;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference userRef = database.getReference("users");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public ProfileFragment() {
@@ -67,21 +66,17 @@ public class ProfileFragment extends Fragment {
         interests.setAdapter(adapter);
 
         if (user != null) {
-            userRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    User user = dataSnapshot.getValue(User.class);
-                    name.setText(user.getName());
-                    email.setText(user.getEmail());
-                    adapter.setItems(user.getInterests());
-                    Glide.with(getActivity()).load(user.getPicture()).into(profileImage);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+            db.collection("users").document(user.getUid())
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                            User user = JsonUtils.map2Object(documentSnapshot.getData(), User.class);
+                            name.setText(user.getName());
+                            email.setText(user.getEmail());
+                            adapter.setItems(user.getInterests());
+                            Glide.with(getActivity()).load(user.getPicture()).into(profileImage);
+                        }
+                    });
         }
 
         return view;

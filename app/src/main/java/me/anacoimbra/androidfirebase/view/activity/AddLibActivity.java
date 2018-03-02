@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,8 +22,8 @@ import br.com.sapereaude.maskedEditText.MaskedEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.anacoimbra.androidfirebase.model.Library;
 import me.anacoimbra.androidfirebase.R;
+import me.anacoimbra.androidfirebase.model.Library;
 
 public class AddLibActivity extends AppCompatActivity {
 
@@ -59,8 +59,7 @@ public class AddLibActivity extends AppCompatActivity {
     int sdk;
     String description;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference libsRef = database.getReference("libs");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +84,11 @@ public class AddLibActivity extends AppCompatActivity {
     public void onSaveClick() {
         if (validate()) {
             Library library = new Library(name, url, date, sdk, license, description);
-            libsRef.push().setValue(library)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+            db.collection("libs")
+                    .add(library)
+                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
                                 setResult(RESULT_OK);
                                 finish();
